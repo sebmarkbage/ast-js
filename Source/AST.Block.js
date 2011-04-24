@@ -1,18 +1,19 @@
-AST.Block = new Class({
+AST.Block = function(obj){
+	if (this instanceof AST.Block){
+		this.statements = Array.prototype.slice.call(arguments);
+		return;
+	}
 
-	initialize: function(){
-		this.statements = Array.slice(arguments);
-	},
-	
-	cast: function(obj){
-		if (obj instanceof AST.Block) return obj;
-		var block = new AST.Block();
-		if (Object.prototype.toString.call(obj) == '[object Array]')
-			block.statements = Array.slice(obj);
-		else
-			block.statements = [obj];
-		return block;
-	},
+	if (obj instanceof AST.Block) return obj;
+	var block = new AST.Block();
+	if (Object.prototype.toString.call(obj) == '[object Array]')
+		block.statements = Array.prototype.slice.call(obj);
+	else
+		block.statements = [obj];
+	return block;
+};
+
+AST.Block.prototype = {
 
 	writeTo: function(writer, format, curly){
 		var body = this.statements;
@@ -33,6 +34,6 @@ AST.Block = new Class({
 		return output.join('');
 	}
 
-});
+};
 
-AST.implement({ Extends: AST.Block });
+AST.prototype = AST.Block.prototype;

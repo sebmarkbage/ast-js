@@ -1,1 +1,5 @@
-var AST = new Class();
+var AST = function(){
+
+	return AST.Block.apply(this, arguments);
+
+};

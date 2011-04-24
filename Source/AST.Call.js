@@ -1,49 +1,41 @@
-AST.Call = new Class({
+AST.Call = function(expr, args){
+	this.expression = AST.Expression(expr);
+	var l = args ? args.length : 0;
+	this.arguments = new Array(l);
+	for (var i = 0; i < l; i++) this.arguments[i] = AST.Expression(args[i]);
+};
 
-	Extends: AST.Expression,
+AST.Call.prototype = new AST.Expression();
 
-	initialize: function(expr, args){
-		this.expression = AST.Expression(expr);
-		this.arguments = Array.map(args, function(v){
-			return AST.Expression(v);
-		});
-	},
-
-	writeTo: function(write, format){
-		this.expression.writeTo(write, format);
-		write('(');
-		var args = this.arguments;
-		if (args.length > 0){
-			args[0].writeTo(write, format);
-			for (var i = 1, l = args.length; i < l; i++){
-				write(', ');
-				args[i].writeTo(write, format);
-			}
+AST.Call.prototype.writeTo = function(write, format){
+	this.expression.writeTo(write, format);
+	write('(');
+	var args = this.arguments;
+	if (args.length > 0){
+		args[0].writeTo(write, format);
+		for (var i = 1, l = args.length; i < l; i++){
+			write(', ');
+			args[i].writeTo(write, format);
 		}
-		write(')');
 	}
+	write(')');
+};
 
-});
+AST.New = function(){
+	AST.Call.apply(this, arguments);
+};
 
-AST.New = new Class({
+AST.New.prototype = new AST.Call();
 
-	Extends: AST.Call,
+AST.New.prototype.writeTo = function(write, format){
+	write('new ');
+	AST.Call.prototype.writeTo.call(this, write, format);
+};
 
-	writeTo: function(write, format){
-		write('new ');
-		this.parent(write, format);
-	}
+AST.Expression.prototype.call = function(){
+	return new AST.Call(this, arguments);
+};
 
-});
-
-AST.Expression.implement({
-
-	call: function(){
-		return new AST.Call(this, arguments);
-	},
-
-	construct: function(){
-		return new AST.New(this, arguments);
-	}
-
-});
+AST.Expression.prototype.construct = function(){
+	return new AST.New(this, arguments);
+};

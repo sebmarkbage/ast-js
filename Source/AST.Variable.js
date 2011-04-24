@@ -1,23 +1,18 @@
-AST.Variable = new Class({
+AST.Variable = function(name){
+	this.name = name;
+};
 
-	Extends: AST.Expression,
+AST.Variable.prototype = new AST.Expression();
 
-	initialize: function(name){
-		this.name = name;
-	},
+AST.Variable.prototype.writeTo = function(write){
+	write(this.name);
+};
 
-	writeTo: function(write){
-		write(this.name);
-	}
+AST.This = function(){
+};
 
-});
+AST.This.prototype = new AST.Expression();
 
-AST.This = new Class({
-
-	Extends: AST.Expression,
-
-	writeTo: function(write){
-		write('this');
-	}
-
-});
+AST.This.prototype.writeTo = function(write){
+	write('this');
+};

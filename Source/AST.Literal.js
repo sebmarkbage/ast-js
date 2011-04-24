@@ -61,18 +61,14 @@ var specialChars = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\
 		write(String(obj));
 	};
 
-AST.Literal = new Class({
+AST.Literal = function(value){
+	this.value = value;
+};
 
-	Extends: AST.Expression,
+AST.Literal.prototype = new AST.Expression();
 
-	initialize: function(value){
-		this.value = value;
-	},
-
-	writeTo: function(writer, format){
-		encode(writer, this.value, format);
-	}
-
-});
+AST.Literal.prototype.writeTo = function(writer, format){
+	encode(writer, this.value, format);
+};
 
 })();

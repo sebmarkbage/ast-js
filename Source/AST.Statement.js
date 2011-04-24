@@ -1,8 +1,8 @@
-AST.Statement = new Class({
+AST.Statement = function(label){
+	this.label = label;
+};
 
-	initialize: function(label){
-		this.label = label;
-	},
+AST.Statement.prototype = {
 
 	writeTo: function(compressed){ },
 
@@ -14,31 +14,26 @@ AST.Statement = new Class({
 		return output.join('');
 	}
 
-});
+};
 
-AST.Return = new Class({
+AST.Return = function(expr){
+	if (arguments.length) this.expression = AST.Expression(expr);
+};
 
-	Extends: AST.Statement,
+AST.Return.prototype = new AST.Statement();
 
-	initialize: function(expr){
-		if (arguments.length) this.expression = AST.Expression(expr);
-	},
+AST.Return.prototype.writeTo = function(write, format){
+	write('return');
+	if (!this.expression) return;
+	write(' ');
+	this.expression.writeTo(write, format);
+};
 
-	writeTo: function(write, format){
-		write('return');
-		if (!this.expression) return;
-		write(' ');
-		this.expression.writeTo(write, format);
-	}
+AST.Break = function(){
+};
 
-});
+AST.Break.prototype = new AST.Statement();
 
-AST.Break = new Class({
-
-	Extends: AST.Statement,
-
-	writeTo: function(write, format){
-		write('break');
-	}
-
-});
+AST.Break.prototype.writeTo = function(write, format){
+	write('break');
+};

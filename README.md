@@ -2,8 +2,6 @@ AST.js
 ======
 Provides an Abstract Syntax Tree (AST) to generate ECMAScript code.
 
-Uses MooTools style classes.
-
 TODO:
 
 - Add parentheses around expressions when necessary

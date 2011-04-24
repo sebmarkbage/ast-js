@@ -1,41 +1,33 @@
-(function(){
+AST.Operator = function(left, operator, right){
+	this.left = AST.Expression(left);
+	this.operator = operator;
+	this.right = AST.Expression(right);
+};
 
-AST.Operator = new Class({
+AST.Operator.prototype = new AST.Expression();
 
-	Extends: AST.Expression,
+AST.Operator.prototype.writeTo = function(write, format){
+	this.left.writeTo(write, format);
+	write(' ' + this.operator + ' ');
+	this.right.writeTo(write, format);
+};
 
-	initialize: function(left, operator, right){
-		this.left = AST.Expression(left);
-		this.operator = operator;
-		this.right = AST.Expression(right);
-	},
+AST.Not = function(expr){
+	this.expression = expr;
+};
 
-	writeTo: function(write, format){
-		this.left.writeTo(write, format);
-		write(' ' + this.operator + ' ');
-		this.right.writeTo(write, format);
-	}
+AST.Not.prototype = new AST.Expression();
 
-});
+AST.Not.prototype.writeTo = function(write, format){
+	write('!');
+	this.expression.writeTo(write, format);
+};
 
-AST.Not = new Class({
-
-	Extends: AST.Expression,
-
-	initialize: function(expr){
-		this.expression = expr;
-	},
-
-	writeTo: function(write, format){
-		write('!');
-		this.expression.writeTo(write, format);
-	}
-
-});
-
-AST.Expression.implement('not', function(){
+AST.Expression.prototype.not = function(){
 	return new AST.Not(this);
-});
+};
+
+(function(){
 
 var operators = {
 
@@ -69,19 +61,13 @@ var operators = {
 
 for (var key in operators) (function(name, cname, op){
 
-	AST[name] = new Class({
+	AST[name] = function(left, right){
+		return new AST.Operator(left, op, right);
+	};
 
-		Extends: AST.Operator,
-
-		initialize: function(left, right){
-			this.parent(left, op, right);
-		}
-
-	});
-
-	AST.Expression.implement(cname, function(expr){
+	AST.Expression.prototype[cname] = function(expr){
 		return new AST[name](this, expr);
-	});
+	};
 
 })(key, key.substr(0, 1).toLowerCase() + key.substr(1), operators[key]);
 
