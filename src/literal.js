@@ -4,10 +4,10 @@ var AST = require('./program');
 
 var specialChars = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
-	escapable = new RegExp('[\x00-\x1f\\"]', 'g'), // RegExp Literal doesn't work in ExtendScript
+	escapable = new RegExp('[\\\\"\\x00-\\x1f]', 'g'), // RegExp Literal doesn't work in ExtendScript
 
     replaceChars = function(chr){
-		return specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
+		return specialChars[chr] || ('\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16));
 	},
 
     encode = function(write, obj, format){
