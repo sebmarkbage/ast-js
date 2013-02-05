@@ -28,7 +28,6 @@ var specialChars = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\
 			return;
 		}
 		if (typeof obj == 'string'){
-			//alert(obj + '||' + obj.charCodeAt(0));
 			write('"' + obj.replace(escapable, replaceChars) + '"');
 			return;
 		}
