@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Property = function(expr, name){
 	this.expression = AST.Expression(expr);
 	this.name = AST.Expression(name);

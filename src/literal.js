@@ -1,4 +1,4 @@
-(function(){
+var AST = require('./program');
 
 // Based on the MooTools JSON implementation
 
@@ -13,6 +13,10 @@ var specialChars = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\
     encode = function(write, obj, format){
 		if (obj === null){
 			write('null');
+			return;
+		}
+		if (typeof obj === 'undefined'){
+			write('undefined');
 			return;
 		}
 		if (typeof obj.toExpression == 'function')
@@ -70,5 +74,3 @@ AST.Literal.prototype = new AST.Expression();
 AST.Literal.prototype.writeTo = function(writer, format){
 	encode(writer, this.value, format);
 };
-
-})();

@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Variable = function(name){
 	this.name = name;
 };

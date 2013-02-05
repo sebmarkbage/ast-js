@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Call = function(expr, args){
 	this.expression = AST.Expression(expr);
 	var l = args ? args.length : 0;

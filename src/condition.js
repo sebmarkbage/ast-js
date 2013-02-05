@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Ternary = function(condition, then, els){
 	this.condition = AST.Expression(condition);
 	this.then = AST.Expression(then);

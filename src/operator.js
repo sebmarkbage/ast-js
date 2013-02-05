@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Operator = function(left, operator, right){
 	this.left = AST.Expression(left);
 	this.operator = operator;
@@ -26,8 +28,6 @@ AST.Not.prototype.writeTo = function(write, format){
 AST.Expression.prototype.not = function(){
 	return new AST.Not(this);
 };
-
-(function(){
 
 var operators = {
 
@@ -70,5 +70,3 @@ for (var key in operators) (function(name, cname, op){
 	};
 
 })(key, key.substr(0, 1).toLowerCase() + key.substr(1), operators[key]);
-
-})();

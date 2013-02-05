@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Function = function(name, args, variables, statements){
 	if (typeof name != 'string'){
 		statements = variables;

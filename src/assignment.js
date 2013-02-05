@@ -1,4 +1,4 @@
-(function(){
+var AST = require('./program');
 
 var err = 'Assignment is only possible on variables or properties.',
 	posterr = 'Only the literal 1 is possible for post assignments.',
@@ -73,5 +73,3 @@ AST.Variable.prototype.postIncrement = AST.Property.prototype.postIncrement = fu
 AST.Variable.prototype.postDecrement = AST.Property.prototype.postDecrement = function(){
 	return new AST.PostAssignment(this, new AST.Subtract(this, 1));
 };
-
-})();

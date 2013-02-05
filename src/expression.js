@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Expression = function(obj){
 	if (arguments.length == 0) return;
 	if (obj && typeof obj.toExpression == 'function') obj = obj.toExpression();

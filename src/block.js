@@ -1,6 +1,11 @@
+var AST = require('./program');
+
 AST.Block = function(obj){
 	if (this instanceof AST.Block){
-		this.statements = Array.prototype.slice.call(arguments);
+		if (Object.prototype.toString.call(obj) == '[object Array]')
+			this.statements = Array.prototype.slice.call(obj);
+		else
+			this.statements = Array.prototype.slice.call(arguments);
 		return;
 	}
 
@@ -10,6 +15,7 @@ AST.Block = function(obj){
 		block.statements = Array.prototype.slice.call(obj);
 	else
 		block.statements = [obj];
+
 	return block;
 };
 
@@ -21,6 +27,7 @@ AST.Block.prototype = {
 		for (var i = 0, l = body.length; i < l; i++){
 			var expr = body[i];
 			if (!(expr instanceof AST.Statement)) body[i] = expr = new AST.Literal(expr);
+			if (expr instanceof AST.Assignment && expr.left instanceof AST.Variable) writer('var '); // Temp hack - breaks sometimes
 			expr.writeTo(writer, format);
 			writer(';\n');
 		}

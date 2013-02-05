@@ -1,3 +1,5 @@
+var AST = require('./program');
+
 AST.Statement = function(label){
 	this.label = label;
 };
